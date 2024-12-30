@@ -9,6 +9,7 @@ A Chrome extension built using Vite and React that automates the generation of G
 - [Installation](#installation)
 - [How to use?](#how-to-use)
 - [Technologies Used](#technologies-used)
+- [Project Media](#project-media)
 - [Contribution](#contribution)
 - [License](#license)
 
@@ -77,6 +78,20 @@ Contributions are welcome! To contribute:
    git push origin feature-name
    ```
 5. Open a pull request.
+
+## Project Media 
+![Screenshot 2024-12-30 102837](https://github.com/user-attachments/assets/e4facf58-d8d2-4fc9-8f75-c4b2c980d053)
+![Screenshot 2024-12-30 102850](https://github.com/user-attachments/assets/3617f902-ddf1-472f-8841-cc9011c98683)
+![Screenshot 2024-12-30 102915](https://github.com/user-attachments/assets/a383176c-99ca-496b-895e-74504fc8beb0)
+
+![Screenshot 2024-12-30 102923](https://github.com/user-attachments/assets/b99ca7c7-b824-4ae2-a38f-14e205c657b5)
+![Screenshot 2024-12-30 102937](https://github.com/user-attachments/assets/e79db6d5-526f-49d2-a45a-a583fc8f6008)
+
+
+
+
+
+
 
 ## License
 
