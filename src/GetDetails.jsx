@@ -1,39 +1,56 @@
 import { useEffect, useState } from "react";
-import { generateORupdateReadmeFile, generateReadmeContent, getEmailId, getFileContent } from "./utils";
+import {
+  generateORupdateReadmeFile,
+  generateReadmeContent,
+  getEmailId,
+  getFileContent,
+} from "./utils";
 
-function GetDetails({ userName, repoName, repositoryUrl }) {
+function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
   const [geminiApiKey, setGeminiApiKey] = useState('');
   const [githubAccessToken, setGithubAccessToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);  // To manage loader visibility
-  const [readmeFileContent, setReadmeFileContent] = useState(null);  // To store readme content
-  const [isReadmeUpdated, setIsReadmeUpdated] = useState(false); // track readme updation
+  const [isLoading, setIsLoading] = useState(false);
+  const [readmeFileContent, setReadmeFileContent] = useState(null);
+  const [isReadmeUpdated, setIsReadmeUpdated] = useState(false);
+  const [clickSave , setClcikSave] = useState(false);
 
-  // Load stored data on component mount
+
+
   useEffect(() => {
-    chrome.storage.sync.get(['geminiApiKey', 'githubAccessToken'], function (result) {
+
+    // chrome.storage.sync.get(null, function (data) {
+    //   console.info(data);
+    // })
+
+    chrome.storage.sync.get(['geminiApiKey', 'githubAccessToken', 'githubUsername'], function (result) {
       if (result.geminiApiKey && result.githubAccessToken) {
-        if (result.geminiApiKey) setGeminiApiKey(JSON.parse(result.geminiApiKey));
-        if (result.githubAccessToken) setGithubAccessToken(JSON.parse(result.githubAccessToken));
+
+        setGeminiApiKey(JSON.parse(result.geminiApiKey));
+        setGithubAccessToken(JSON.parse(result.githubAccessToken));
+        setClcikSave(true);
         document.getElementById("statusMessage").textContent = "Keys are already present.";
         document.getElementById("statusMessage").style.color = "#28a745";
+
+
       } else {
         document.getElementById("statusMessage").textContent = "Please fill in both fields.";
         document.getElementById("statusMessage").style.color = "#dc3545";
       }
     });
-  }, []);
+  }, [userName, githubUsername]);
 
-  // Save data to Chrome storage
   const handleSave = () => {
     if (geminiApiKey && githubAccessToken) {
       chrome.storage.sync.set(
         {
           geminiApiKey: JSON.stringify(geminiApiKey),
           githubAccessToken: JSON.stringify(githubAccessToken),
+          githubUsername: JSON.stringify(userName),
         },
         function () {
           document.getElementById("statusMessage").textContent = "API keys saved successfully!";
-          document.getElementById("statusMessage").style.color = "#28a745";
+          document.getElementById("statusMessage").style.color = "#28a745";          
+          window.location.reload();          
         }
       );
     } else {
@@ -57,17 +74,32 @@ function GetDetails({ userName, repoName, repositoryUrl }) {
     setIsLoading(true);
     await generateORupdateReadmeFile(userName, repoName, githubAccessToken, readmeFileContent);
     setTimeout(() => {
-      setReadmeFileContent("README file content updated successfully! Please reload the Page...");
+      setReadmeFileContent("README file content updated successfully...");
       setIsReadmeUpdated(true);
       setIsLoading(false);
     }, 2000);
+    chrome.tabs.reload()
   };
+
+
+  const handleClearKeys = async () => {
+    // clear the chrome storage
+    await chrome.storage.sync.clear(function () {
+      const error = chrome.runtime.lastError;
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('Sync storage cleared.');
+      }
+      window.location.reload();
+    });
+  }
 
   return (
     <div className="container">
-     <h2 className="header">AI Powered GitHub Readme Generator</h2>
+      <h2 className="header">AI Powered GitHub Readme Generator</h2>
 
-
+      {/* input fields */}
       <div className="form-group">
         <label htmlFor="geminiApiKey">
           Gemini API Key:
@@ -84,6 +116,7 @@ function GetDetails({ userName, repoName, repositoryUrl }) {
           type="text"
           id="geminiApiKey"
           value={geminiApiKey}
+          placeholder="Enter Gemini Api key..."
           onChange={(e) => setGeminiApiKey(e.target.value)}
         />
       </div>
@@ -103,31 +136,28 @@ function GetDetails({ userName, repoName, repositoryUrl }) {
           type="text"
           id="githubAccessToken"
           value={githubAccessToken}
+          placeholder="Enter gitHub access token..."
           onChange={(e) => setGithubAccessToken(e.target.value)}
         />
       </div>
-
-
-
-
-
-
 
       <p id="statusMessage"></p>
 
       <div className="button-container">
         <button onClick={handleSave} className="btn save-btn">Save</button>
-        <button onClick={handleGenerate} className="btn generate-btn">
-          {isLoading && !readmeFileContent ? "Generating..." : "Generate"}
-        </button>
+        {githubAccessToken && geminiApiKey && clickSave&& (<button onClick={handleClearKeys} className="btn clear-btn">Clear Keys</button>)}
+        {githubAccessToken && geminiApiKey && clickSave&& (
+          <button onClick={handleGenerate} className="btn generate-btn">
+            {isLoading && !readmeFileContent ? "Generating..." : "Generate"}
+          </button>
+        )}
       </div>
 
-      {/* Show loader if content is loading */}
+
       {isLoading && !readmeFileContent && (
         <div className="loader">Loading...</div>
       )}
 
-      {/* Display the generated README content if available */}
       {readmeFileContent && (
         <div className="content-display">
           <h3>Generated README Content:</h3>
@@ -135,8 +165,6 @@ function GetDetails({ userName, repoName, repositoryUrl }) {
         </div>
       )}
 
-
-      {/* Show "Create/Update Readme" button after content is generated */}
       {readmeFileContent && !isLoading && !isReadmeUpdated && (
         <div className="button-container">
           <button onClick={handleCreateReadme} className="btn create-btn">
@@ -148,10 +176,6 @@ function GetDetails({ userName, repoName, repositoryUrl }) {
       {readmeFileContent && isLoading && (
         <div className="loader">Loading...</div>
       )}
-
-
-
-
     </div>
   );
 }

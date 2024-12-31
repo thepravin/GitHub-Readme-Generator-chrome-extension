@@ -73,6 +73,16 @@ input[type="text"] {
   background-color: #45a049;
 }
 
+.clear-btn {
+  background-color: red;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: rgb(239, 36, 36);
+}
+
+
 .generate-btn {
   background-color: #008CBA;
   color: white;
