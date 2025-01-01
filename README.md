@@ -47,7 +47,7 @@ A Chrome extension built using Vite and React that automates the generation of G
 
 1. Navigate to a GitHub repository in Chrome.
 2. Click the GitHub Readme Generator extension icon.
-3. Provide [Gemini Api key](https://ai.google.dev/gemini-api/docs/api-key) and [GitHub Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+3. Provide <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank">Gemini Api key</a>  and  <a href="./GitHubAccessToken.md" target="_blank">GitHub Access Token</a>.
 4. The extension will analyze the repository's files and folder structure.
 5. Review the generated `README.md` file.
 6. Click on update/create your repository's `README.md` file.
@@ -81,8 +81,10 @@ Contributions are welcome! To contribute:
 
 ## Project Media 
 ![Screenshot 2024-12-30 102837](https://github.com/user-attachments/assets/e4facf58-d8d2-4fc9-8f75-c4b2c980d053)
-![Screenshot 2024-12-30 102850](https://github.com/user-attachments/assets/3617f902-ddf1-472f-8841-cc9011c98683)
-![Screenshot 2024-12-30 102915](https://github.com/user-attachments/assets/a383176c-99ca-496b-895e-74504fc8beb0)
+![image](https://github.com/user-attachments/assets/a5608637-414d-463d-85f2-905a898f9143)
+
+![image](https://github.com/user-attachments/assets/d5ec1c27-2c66-4823-965c-9630d67b1527)
+
 
 ![Screenshot 2024-12-30 102923](https://github.com/user-attachments/assets/b99ca7c7-b824-4ae2-a38f-14e205c657b5)
 ![Screenshot 2024-12-30 102937](https://github.com/user-attachments/assets/e79db6d5-526f-49d2-a45a-a583fc8f6008)
