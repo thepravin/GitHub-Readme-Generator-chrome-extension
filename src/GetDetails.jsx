@@ -127,7 +127,7 @@ function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
         <label htmlFor="githubAccessToken">
           GitHub Access Token:
           <a
-            href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+            href="https://github.com/thepravin/GitHub-Readme-Generator-chrome-extension/blob/main/GitHubAccessToken.md"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontSize: 'small', fontStyle: 'italic', marginLeft: '10px' }}
