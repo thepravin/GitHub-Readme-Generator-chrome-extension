@@ -6,6 +6,7 @@ function App() {
   const [userName, setUserName] = useState();
   const [repoName, setRepoName] = useState();
   const [repositoryUrl, setRepositoryUrl] = useState();
+  const [isValidGitHubRepo, setIsValidGitHubRepo] = useState(true);
 
   useEffect(() => {
     async function getActiveTabURL() {
@@ -18,17 +19,24 @@ function App() {
 
       if (!currentTab || !currentTab.url) {
         console.log("No valid URL found");
+        setIsValidGitHubRepo(false);
         return;
       }
 
-      const { userName, repoName } = extractRepoDetails(currentTab.url);
-      setRepoName(repoName);
-      setUserName(userName);
-      setRepositoryUrl(currentTab.url);
+      const { userName, repoName, error } = extractRepoDetails(currentTab.url);
+
+      if (error) {
+        setIsValidGitHubRepo(false);
+      } else {
+        setRepoName(repoName);
+        setUserName(userName);
+        setRepositoryUrl(currentTab.url);
+        setIsValidGitHubRepo(true);
+      }
     }
 
     fetchRepoDetails();
-  }, []); 
+  }, []);
 
   function extractRepoDetails(githubUrl) {
     if (!githubUrl) {
@@ -49,9 +57,15 @@ function App() {
   }
 
   return (
-    <>
-      <GetDetails userName={userName} repoName={repoName} repositoryUrl={repositoryUrl} />
-    </>
+    <div>
+      {isValidGitHubRepo ? (
+        <GetDetails userName={userName} repoName={repoName} repositoryUrl={repositoryUrl} />
+      ) : (
+        <div className="error-message">
+          <p>This is not a valid GitHub repository page.</p>    
+        </div>
+      )}
+    </div>
   );
 }
 

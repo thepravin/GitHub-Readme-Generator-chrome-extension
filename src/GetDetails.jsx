@@ -12,7 +12,7 @@ function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
   const [isLoading, setIsLoading] = useState(false);
   const [readmeFileContent, setReadmeFileContent] = useState(null);
   const [isReadmeUpdated, setIsReadmeUpdated] = useState(false);
-  const [clickSave , setClcikSave] = useState(false);
+  const [clickSave, setClcikSave] = useState(false);
 
 
 
@@ -49,8 +49,8 @@ function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
         },
         function () {
           document.getElementById("statusMessage").textContent = "API keys saved successfully!";
-          document.getElementById("statusMessage").style.color = "#28a745";          
-          window.location.reload();          
+          document.getElementById("statusMessage").style.color = "#28a745";
+          window.location.reload();
         }
       );
     } else {
@@ -77,8 +77,11 @@ function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
       setReadmeFileContent("README file content updated successfully...");
       setIsReadmeUpdated(true);
       setIsLoading(false);
-    }, 2000);
-    chrome.tabs.reload()
+    }, 1500);
+    chrome.tabs.reload();
+    setTimeout(() => {
+      window.close();
+    }, 2500)
   };
 
 
@@ -145,8 +148,8 @@ function GetDetails({ userName, githubUsername, repoName, repositoryUrl }) {
 
       <div className="button-container">
         <button onClick={handleSave} className="btn save-btn">Save</button>
-        {githubAccessToken && geminiApiKey && clickSave&& (<button onClick={handleClearKeys} className="btn clear-btn">Clear Keys</button>)}
-        {githubAccessToken && geminiApiKey && clickSave&& (
+        {githubAccessToken && geminiApiKey && clickSave && (<button onClick={handleClearKeys} className="btn clear-btn">Clear Keys</button>)}
+        {githubAccessToken && geminiApiKey && clickSave && (
           <button onClick={handleGenerate} className="btn generate-btn">
             {isLoading && !readmeFileContent ? "Generating..." : "Generate"}
           </button>
